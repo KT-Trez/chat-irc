@@ -1,0 +1,62 @@
+.nick-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nick-container__nick {
+  background-color: #4d4d4d;
+  font-family: 'Roboto';
+  border-bottom: 1px solid #333;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.nick-container__nick__description {
+  width: 100%;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.nick-container__nick__inputs {}
+
+#js-nick-container__nick__inputs--nick {
+  background-color: #999999;
+  color: white;
+  font-family: 'Roboto';
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+#js-nick-container__nick__inputs--nick:focus:not([disabled]) {
+  border: 1px solid white;
+  outline: none;
+}
+
+#js-nick-container__nick__inputs--join {
+  background-color: #999999;
+  color: white;
+  text-align: center;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 4px;
+}
+
+#js-nick-container__nick__inputs--join:hover:not([disabled]) {
+  background-color: white;
+  color: #999999;
+}
+
+#js-nick-container__nick__inputs--join:active:not([disabled]) {
+  transform: translateY(2px);
+}
+
+.js-require {
+  border: 1px solid #e98924 !important;
+  outline: none;
+}

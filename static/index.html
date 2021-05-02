@@ -8,31 +8,51 @@
   <title>Chat IRC</title>
 
   <!-- stylesheets & fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/master.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/nick.css">
 
   <!-- scripts -->
-  <script type="text/javascript" src="js/app.js"></script>
+  <script type="module" src="js/app.js"></script>
+
+  <!-- modules -->
+  <script type="module" src="js/classes/Client.js"></script>
+  <script type="module" src="js/classes/Message.js"></script>
+
+  <script type="module" src="js/components/dev.js"></script>
+  <script type="module" src="js/components/utils.js"></script>
+
+  <!-- templates -->
+  <script type="module" src="js/templates/nick.js"></script>
 
 </head>
 
 <body>
 
-  <div id="main">
-    <div class="join">
-      <p>Podaj swój nick</p>
-      <input type="text">
-      <button>Dołącz</button>
+  <div id="root">
+    <div id="js-root__info">Chat IRC: Wprowadź nick</div>
+    <div class="root__controls">
+      <div class="root__controls__room">
+        <p id="js-root__controls__room__id--display">Kanał: <span id="js-root__controls__room__id--display-id"><i>brak</i></span></p>
+        <div class="root__controls__room__id__inputs js-hide">
+          <input id="js-root__controls__room__id__inputs--input" placeholder="id pokoju" type="text">
+          <button id="root__controls__room__id__inputs--join">Dołącz</button>
+        </div>
+      </div>
+      <div class="root__controls__buttons">
+        <button class="root__controls__buttons__button" id="js-root__controls__buttons__button--change" disabled>Zmień pokój</button>
+        <button class="root__controls__buttons__button" id="js-root__controls__buttons__button--leave" disabled>Opuść pokój</button>
+      </div>
+      <div id="root__controls__clients"></div>
     </div>
-
-    <!-- <div class="">
-      <p>Podaj swój nick</p>
-      <input type="text">
-      <p>Podaj id pokoju</p>
-      <input type="text">
-      <button>Dołącz</button>
-    </div> -->
-
+    <div class="root__chat">
+      <div id="js-root__chat__messages"></div>
+      <div class="root__chat__input">
+        <img alt="emoji" class="root__chat__input__button" disabled id="js-root__chat__input__button--emoji" src="gfx/emoji/heart.svg">
+        <input disabled id="js-root__chat__input__message" placeholder="Napisz wiadomość do pokoju" type="text">
+        <img alt="send" class="root__chat__input__button" disabled id="js-root__chat__input__button--send" src="gfx/send.svg">
+      </div>
+    </div>
   </div>
 
 </body>

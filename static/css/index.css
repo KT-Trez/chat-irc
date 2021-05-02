@@ -1,0 +1,216 @@
+.root__controls {
+  height: calc(100% - 45px);
+  width: 20%;
+  background-color: #404040;
+  font-family: 'Roboto';
+  font-size: 15px;
+  box-sizing: border-box;
+  border-right: 1px solid #595959;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: center;
+}
+
+.root__controls__room {
+  width: 100%;
+  font-size: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.root__controls__room__id__inputs {
+  width: 100%;
+  background-color: #4d4d4d;
+  border-bottom: 1px solid #333;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.root__controls__buttons {
+  width: 100%;
+  background-color: #4d4d4d;
+  border-bottom: 1px solid #333;
+  padding: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.root__controls__buttons__button {
+  font-family: 'Roboto';
+  width: 48%;
+  background-color: #999999;
+  color: white;
+  text-align: center;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 4px;
+}
+
+.root__controls__buttons__button:hover:not([disabled]) {
+  background-color: white;
+  color: #999999;
+}
+
+.root__controls__buttons__button:active:not([disabled]) {
+  transform: translateY(2px);
+}
+
+.root__chat {
+  height: calc(100% - 45px);
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+}
+
+.root__chat__input {
+  width: 90%;
+  background-color: #404040;
+  border: 1px solid #595959;
+  border-radius: 8px;
+  padding: 5px;
+  padding-left: 0px;
+  padding-right: 0px;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 20px;
+}
+
+.root__chat__input__button {
+  height: 27px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.root__chat__input__button:hover:not([disabled]) {
+  transform: scale(1.10);
+}
+
+.root__chat__input__button:active:not([disabled]) {
+  transform: scale(0.9);
+}
+
+#js-root__info {
+  width: 100%;
+  background-color: #303030;
+  font-family: 'Roboto';
+  font-size: 20px;
+  text-align: center;
+  box-sizing: border-box;
+  border-bottom: 1px solid #595959;
+  padding: 10px;
+}
+
+#js-root__controls__room__id--display {
+  width: 100%;
+  background-color: #4d4d4d;
+  border-bottom: 1px solid #333;
+  padding: 15px;
+}
+
+#js-root__controls__room__id--display-id {
+  font-family: 'Roboto--thin';
+}
+
+#js-root__controls__room__id__inputs--input {
+  width: calc(100% - 65px);
+  background-color: #999999;
+  color: white;
+  font-family: 'Roboto';
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+#js-root__controls__room__id__inputs--input:focus:not([disabled]) {
+  border: 1px solid white;
+  outline: none;
+}
+
+#root__controls__room__id__inputs--join {
+  background-color: #999999;
+  color: white;
+  font-family: 'Roboto';
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+#root__controls__room__id__inputs--join:hover:not([disabled]) {
+  background-color: white;
+  color: #999999;
+}
+
+#root__controls__room__id__inputs--join:active:not([disabled]) {
+  transform: translateY(2px);
+}
+
+#root__controls__clients {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+#js-root__chat__messages {
+  height: calc(100% - 101px);
+  width: 90%;
+  font-family: 'Dosis';
+  border: 1px solid transparent;
+  /* border: 1px solid #595959; */
+  /* border-radius: 8px; */
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow-y: auto;
+}
+
+#js-root__chat__input__button--emoji {}
+
+#js-root__chat__input__message {
+  width: calc(100% - 54px);
+  background-color: #4D4D4D;
+  color: white;
+  font-family: 'Dosis';
+  font-size: 15px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+#js-root__chat__input__message:focus:not([disabled]) {
+  border: 1px solid white;
+  outline: none;
+}
+
+#js-root__chat__input__button--send {}
+
+.js-hide {
+  display: none;
+}
+
+.js-channel {
+  font-family: 'Roboto--thin';
+}
+
+:disabled {
+  opacity: 0.25;
+}

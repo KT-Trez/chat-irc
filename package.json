@@ -17,7 +17,7 @@
     "irc"
   ],
   "main": "server.js",
-  "name": "chińczyk-online",
+  "name": "chat_irc",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KT-Trez/Chat_IRC.git"
