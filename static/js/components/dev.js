@@ -1,10 +1,12 @@
 "use strict";
 console.log('Loaded: dev.js');
 
-export class Dev {
+class Dev {
 
   constructor() {
 
   }
 
 }
+
+window.Dev = Dev;

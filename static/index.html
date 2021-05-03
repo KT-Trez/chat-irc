@@ -10,7 +10,10 @@
   <!-- stylesheets & fonts -->
   <link rel="stylesheet" href="css/master.css">
   <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/js-selectors.css">
+  <link rel="stylesheet" href="css/message.css">
   <link rel="stylesheet" href="css/nick.css">
+  <link rel="stylesheet" href="css/scrollbar.css">
 
   <!-- scripts -->
   <script type="module" src="js/app.js"></script>
@@ -18,11 +21,13 @@
   <!-- modules -->
   <script type="module" src="js/classes/Client.js"></script>
   <script type="module" src="js/classes/Message.js"></script>
+  <script type="module" src="js/classes/Listener.js"></script>
 
   <script type="module" src="js/components/dev.js"></script>
   <script type="module" src="js/components/utils.js"></script>
 
   <!-- templates -->
+  <script type="module" src="js/templates/message.js"></script>
   <script type="module" src="js/templates/nick.js"></script>
 
 </head>
@@ -44,6 +49,10 @@
         <button class="root__controls__buttons__button" id="js-root__controls__buttons__button--leave" disabled>Opuść pokój</button>
       </div>
       <div id="root__controls__clients"></div>
+      <div class="js-hide" id="js-root__controls__nick">
+        <div class="js-online" id="js-root__controls__nick--status"></div>
+        <span id="js-root__controls__nick--nick"><i>nick</i></span>
+      </div>
     </div>
     <div class="root__chat">
       <div id="js-root__chat__messages"></div>

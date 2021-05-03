@@ -1,0 +1,45 @@
+#js-root__controls__nick {
+  width: 100%;
+  box-sizing: border-box;
+  border-top: 1px solid #333;
+  padding: 10px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  bottom: 0px;
+}
+
+#js-root__controls__nick--status {
+  height: 16px;
+  width: 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
+
+#js-root__controls__nick--nick {
+  width: calc(100% - 18px);
+  font-family: 'Dosis--bold';
+  font-size: 16px;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.js-online {
+  background-color: #43b582;
+}
+
+.js-afk {
+  background-color: #faa81a;
+}
+
+.js-dnd {
+  background-color: #f04747;
+}
+
+.js-hide {
+  display: none !important;
+}

@@ -19,6 +19,7 @@ module.exports = class Room {
     this.expireTimeout = setTimeout(() => Room.list.splice(Room.list.indexOf(this), 1), 3600000);
     this.id = new Date().getTime() + (Math.random() * 1000).toFixed(0);
     this.messagesCount = 0;
+    this.resList = [];
     this.timestamp = new Date();
   }
 

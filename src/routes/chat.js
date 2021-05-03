@@ -15,14 +15,17 @@ router.post('/message', (req, res) => {
     let room = Room.list.find(room => room.id == reqData.room);
     let client = room ? room.clients.find(client => client.token == reqData.token) : null;
 
-    let message = new Message(client, reqData, room);
-    if (room)
+    if (room && client) {
+      let message = new Message(client, reqData, room).emojify();
+
       room.messagesCount++;
+      room.resList.forEach(res => res.send(message));
+      room.resList = [];
 
-    if (room && client)
       Database.write(message);
-
-    res.send(message);
+      res.sendStatus(200);
+    } else
+      res.sendStatus(400);
   });
 });
 

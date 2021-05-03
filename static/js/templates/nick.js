@@ -1,8 +1,10 @@
+"use strict";
 console.log('Loaded template: nick.js');
 import Client from '../classes/Client.js'
+import Listener from '../classes/Listener.js'
 import Message from '../classes/Message.js'
 
-const lobby = { // eskportowany pola wprowadź nick
+const template = { // eskportowany szablon pola wprowadź nick
   data: {
     async joinRoom() {
       let nickInput = document.getElementById('js-nick-container__nick__inputs--nick');
@@ -29,12 +31,16 @@ const lobby = { // eskportowany pola wprowadź nick
       Array.from(document.querySelectorAll('[disabled]')).forEach(element => element.removeAttribute('disabled'));
 
       document.getElementById('js-root__controls__room__id--display-id').innerText = 'general';
+      document.getElementById('js-root__controls__nick').classList.remove('js-hide');
+      document.getElementById('js-root__controls__nick--nick').innerText = sessionStorage.getItem('client_nick');
+      document.getElementById('js-root__chat__messages').innerText = '';
 
       document.getElementById('js-root__chat__input__button--send')
         .addEventListener('click', () => this.sendMessage());
       document.getElementById('js-root__chat__input__message')
         .addEventListener('keydown', (event) => event.key.toLowerCase() == 'enter' ? this.sendMessage() : null);
 
+      Listener.listenMessage();
     }
   },
   async action() { // uruchomiony szablon
@@ -59,4 +65,4 @@ const lobby = { // eskportowany pola wprowadź nick
     `
 }
 
-export default lobby;
+export default template;

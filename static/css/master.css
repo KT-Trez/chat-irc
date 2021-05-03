@@ -31,6 +31,11 @@ body {
 }
 
 @font-face {
+  font-family: Dosis--bold;
+  src: url('../fonts/Dosis/Dosis-Bold.ttf');
+}
+
+@font-face {
   font-family: Dosis--light;
   src: url('../fonts/Dosis/Dosis-Light.ttf');
 }

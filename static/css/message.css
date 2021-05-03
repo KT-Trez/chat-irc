@@ -1,0 +1,13 @@
+.message {
+  width: 100%;
+}
+
+.message__timestamp {}
+
+.message__author {
+  font-family: 'Dosis--bold';
+  margin-left: 5px;
+  margin-right: 8px;
+}
+
+.message__content {}

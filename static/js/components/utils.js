@@ -20,4 +20,14 @@ export default class Utils { // klasa pomocnicza
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
+  static timeShort(time) { // funckja zwracająca czas w formacie hh:ss
+    function oneToDwoDigit(number) {
+      if (number.toString().length == 1)
+        return '0' + number;
+      else
+        return number.toString();
+    };
+    return oneToDwoDigit(time.getHours()) + ':' + oneToDwoDigit(time.getMinutes());
+  }
+
 }
