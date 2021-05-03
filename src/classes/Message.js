@@ -42,4 +42,13 @@ module.exports = class Message {
     return this;
   }
 
+  send(room) {
+    let recipientList = [...room.resList];
+    room.resList = [];
+    room.messagesCount++;
+
+    recipientList.forEach(res => !res.headerSent ? res.send(this) : null);
+    return this;
+  }
+
 }
