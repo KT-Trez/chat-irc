@@ -7,6 +7,7 @@ export default class Client {
   static async init(nick) {
     console.log(`${Utils.fullTime(new Date())} [WORKING] Trying to register as '${nick}'.`);
 
+    sessionStorage.clear();
     let reqData = {
       nick
     };

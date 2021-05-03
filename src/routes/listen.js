@@ -22,7 +22,7 @@ router.post('/listenMessages', (req, res) => {
       setTimeout(() => {
         let wantedRes = room.resList.find(searchedRes => searchedRes == res);
         if (wantedRes)
-          room.resList.splice(room.resList.indexOf(wantedRes), 1)
+          room.resList.splice(room.resList.indexOf(wantedRes), 1);
       }, 25000);
     };
   });

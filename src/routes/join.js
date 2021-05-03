@@ -1,6 +1,7 @@
 const express = require('express');
 
 const Client = require('../classes/Client');
+const Message = require('../classes/Message');
 const Room = require('../classes/Room');
 
 const Utils = require('../components/utils');
@@ -17,6 +18,13 @@ router.post('/register', (req, res) => {
 
     let general = Room.getGeneral();
     let client = new Client(reqData, general);
+
+    let resData = {
+      content: 'Użytkownik {{userNick}} dołączył!',
+      data: client.nick,
+      type: 'join'
+    };
+    new Message(client, resData, general).send(general);
 
     res.send(JSON.stringify(client));
   });

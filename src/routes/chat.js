@@ -20,11 +20,7 @@ router.post('/message', (req, res) => {
     let client = room ? room.clients.find(client => client.token == reqData.token) : null;
 
     if (room && client) {
-      let message = new Message(client, reqData, room).emojify();
-
-      room.messagesCount++;
-      room.resList.forEach(res => res.send(message));
-      room.resList = [];
+      let message = new Message(client, reqData, room).emojify().send(room);
 
       Database.write(message);
       res.sendStatus(200);

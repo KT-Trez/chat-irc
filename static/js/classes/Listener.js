@@ -35,8 +35,9 @@ export default class Listener {
       let resData = await res.json();
       if (!sessionStorage.getItem('last_message'))
         sessionStorage.setItem('last_message', resData.orderNumber);
-      else if (sessionStorage.getItem('last_message') + 1 != resData.orderNumber)
+      else if (parseInt(sessionStorage.getItem('last_message')) + 1 != resData.orderNumber)
         Listener.recoverMessages(sessionStorage.getItem('last_message'), resData.orderNumber);
+      sessionStorage.setItem('last_message', resData.orderNumber);
 
       message.mount(resData.type, resData);
     } else {
@@ -47,6 +48,7 @@ export default class Listener {
 
   static async recoverMessages(lastRecivedMessageNumber, newRecivedMessageNumber) {
     console.log('Starting recovery of a message.');
+    console.log(`Recovery: from ${lastRecivedMessageNumber} to ${newRecivedMessageNumber}`);
   }
 
 }

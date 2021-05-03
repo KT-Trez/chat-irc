@@ -20,9 +20,18 @@ const template = { // eskportowany szablon wiadomości czatu
       let messageField = document.getElementById('js-root__chat__messages');
       messageField.innerHTML += message;
       messageField.scrollTop = messageField.scrollHeight;
+    } else if (type == 'join') {
+      let message = this.template
+        .replace('{{messageId}}', context.id)
+        .replace('{{messageTimestamp}}', Utils.timeShort(new Date(context.timestamp)))
+        .replace('{{messageAuthor}}', '')
+        .replace('{{messageContent}}', `<span style="color: #43b582;">${context.content}</span>`)
+        .replace('{{userNick}}', `<span style="font-family: 'Dosis--bold';">${context.data}</span>`);
+
+      let messageField = document.getElementById('js-root__chat__messages');
+      messageField.innerHTML += message;
+      messageField.scrollTop = messageField.scrollHeight;
     };
-
-
   },
   template: // szablon wiadomości czatu
     `

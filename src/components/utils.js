@@ -68,7 +68,7 @@ module.exports = class Utils { // klasa pomocnicza
     try {
       JSON.parse(JSONstring);
     } catch (error) {
-      console.log(this.logLevelBg(3) + this.fullTimeAndDate(new Date()) + '[WARNING] Invalid JSON body (' + optional + ').' + this.logLevelBg('end'));
+      console.log(this.logLevelBg(3) + `${this.fullTimeAndDate(new Date())} [WARNING] Invalid JSON body (${optional}).` + this.logLevelBg('end'));
       return false;
     };
     return true;
