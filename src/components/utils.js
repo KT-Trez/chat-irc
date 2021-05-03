@@ -64,4 +64,14 @@ module.exports = class Utils { // klasa pomocnicza
     }
   }
 
+  static isJSONValid(JSONstring) {
+    try {
+      JSON.parse(JSONstring);
+    } catch (error) {
+      console.log(this.logLevelBg(3) + this.fullTimeAndDate(new Date()) + '[WARNING] Invalid JSON body.' + this.logLevelBg('end'));
+      return false;
+    };
+    return true;
+  }
+
 }

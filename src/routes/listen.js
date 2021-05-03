@@ -2,11 +2,16 @@ const express = require('express');
 
 const Room = require('../classes/Room');
 
+const Utils = require('../components/utils');
+
 const router = express.Router();
 
 
 router.post('/listenMessages', (req, res) => {
   req.on('data', data => {
+    if (!Utils.isJSONValid(data))
+      return res.sendStatus(400);
+
     let reqData = JSON.parse(data);
 
     let room = Room.list.find(room => room.id == reqData.room);
