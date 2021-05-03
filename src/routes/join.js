@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post('/register', (req, res) => {
   req.on('data', data => {
-    if (!Utils.isJSONValid(data))
+    if (!Utils.isJSONValid(data, 'join'))
       return res.sendStatus(400);
 
     let reqData = JSON.parse(data);

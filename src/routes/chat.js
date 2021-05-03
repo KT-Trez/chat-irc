@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post('/message', (req, res) => {
   req.on('data', data => {
-    if (!Utils.isJSONValid(data))
+    if (!Utils.isJSONValid(data, 'chat'))
       return res.sendStatus(400);
 
     let reqData = JSON.parse(data);

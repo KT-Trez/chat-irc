@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post('/listenMessages', (req, res) => {
   req.on('data', data => {
-    if (!Utils.isJSONValid(data))
+    if (!Utils.isJSONValid(data, 'listen'))
       return res.sendStatus(400);
 
     let reqData = JSON.parse(data);
