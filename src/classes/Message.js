@@ -2,18 +2,17 @@ module.exports = class Message {
 
   static queue = [];
 
-  static executeQueue(queueRoom) {
-    let data = queueRoom.messages[0];
+  static executeQueue(roomInQueue) {
+    let messageData = roomInQueue.messages[0];
 
-    if (data) {
-      data.room.messagesCount++;
-      data.room.resList.forEach(res => res.send(data.message));
-      data.room.resList = [];
+    messageData.room.messagesCount++;
+    while (messageData.room.resList.length != 0) {
+      messageData.room.resList.forEach(res => res.send(messageData.message));
+      messageData.room.resList = [];
+      roomInQueue.messages.splice(roomInQueue.messages.indexOf(messageData), 1);
+    };
 
-      queueRoom.messages.splice(queueRoom.messages.indexOf(data), 1);
-      Message.executeQueue(queueRoom);
-    } else
-      Message.queue.splice(Message.queue.indexOf(queueRoom, 1));
+    Message.queue.splice(Message.queue.indexOf(roomInQueue, 1));
   }
 
   constructor(client, message, room) {
@@ -59,24 +58,29 @@ module.exports = class Message {
   }
 
   send(room) {
-    let queueRoom = Message.queue.find(queueRoom => queueRoom.id == room.id);
+    let roomInQueue = Message.queue.find(roomInQueue => roomInQueue.id == room.id);
 
-    if (!queueRoom) {
-      queueRoom = {
+    if (!roomInQueue) {
+      let newRoomInQueue = {
         id: room.id,
         messages: []
       };
 
-      Message.queue.push(queueRoom);
+      newRoomInQueue.messages.push({
+        message: this,
+        room
+      });
+      Message.queue.push(newRoomInQueue);
+
+      Message.executeQueue(newRoomInQueue);
+      return this;
+    } else {
+      roomInQueue.messages.push({
+        message: this,
+        room
+      });
+      return this;
     };
-
-    queueRoom.messages.push({
-      message: this,
-      room
-    });
-    Message.executeQueue(queueRoom);
-
-    return this;
   }
 
 }

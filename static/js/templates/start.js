@@ -17,13 +17,13 @@ const template = { // eskportowany szablon startowy
         return this.lightInput(nickInput);
       else {
         await Client.init(nickInput.value);
-        await client.data.loadAll(await Client.getAll());
         this.startAll();
+        await client.data.loadAll(await Client.getAll());
       };
     },
     lightInput(input) {
       input.classList.add('js-require');
-      setTimeout(() => input.classList.remove('js-require'), 500);
+      setTimeout(() => input.classList.remove('js-require'), 1000);
     },
     sendMessage() {
       let messageInput = document.getElementById('js-root__chat__input__message');
@@ -44,7 +44,8 @@ const template = { // eskportowany szablon startowy
       } else if (messageInput.value) {
         new Message(messageInput.value).send()
         messageInput.value = '';
-      };
+      } else
+        this.lightInput(messageInput)
     },
     startAll() {
       Array.from(document.querySelectorAll('[disabled]')).forEach(element => element.removeAttribute('disabled'));

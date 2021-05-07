@@ -11,7 +11,7 @@ const template = { // eskportowany szablon klienta
           .replace('{{clientNick}}', client.nick);
 
         let clientField = document.getElementById('root__controls__clients');
-        clientField.innerHTML += clientDOM;
+        if (client.id != sessionStorage.getItem('client_id')) clientField.innerHTML += clientDOM;
       });
       this.sortClients();
     },

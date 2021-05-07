@@ -1,7 +1,6 @@
 const express = require('express');
 
 const Client = require('../classes/Client');
-const Message = require('../classes/Message');
 const Room = require('../classes/Room');
 
 const Utils = require('../components/utils');
@@ -16,10 +15,10 @@ router.post('/getClients', (req, res) => {
     let reqData = JSON.parse(data);
 
     let room = Room.list.find(room => room.id == reqData.room);
-    let client = room ? room.clients.find(client => client.token == reqData.token) : null;
+    let clientData = room ? room.clients.find(clientData => clientData.client.token == reqData.token) : null;
 
-    if (room && client) {
-      let clientList = room.resEventsList.map(data => data.client);
+    if (room && clientData) {
+      let clientList = room.clients.map(data => data.client);
       res.send(JSON.stringify(clientList));
     };
   });
@@ -33,13 +32,6 @@ router.post('/register', (req, res) => {
 
     let general = Room.getGeneral();
     let client = new Client(reqData, general);
-
-    let resData = {
-      content: 'Użytkownik {{userNick}} dołączył!',
-      data: client.nick,
-      type: 'join'
-    };
-    new Message(client, resData, general).send(general);
 
     res.send(JSON.stringify(client));
   });

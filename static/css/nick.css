@@ -60,8 +60,3 @@
 #js-nick-container__nick__inputs--join:active:not([disabled]) {
   transform: translateY(2px);
 }
-
-.js-require {
-  border: 1px solid #e98924 !important;
-  outline: none;
-}

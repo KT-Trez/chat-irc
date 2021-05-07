@@ -109,6 +109,11 @@
   font-family: 'Roboto--thin';
 }
 
+.js-require {
+  border: 1px solid #e98924 !important;
+  outline: none;
+}
+
 .js-online {
   background-color: #43b582;
 }

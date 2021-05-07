@@ -21,6 +21,7 @@ export default class Client {
       let resData = await res.json();
 
       sessionStorage.setItem('client_color', resData.color);
+      sessionStorage.setItem('client_id', resData.id);
       sessionStorage.setItem('client_nick', resData.nick);
       sessionStorage.setItem('client_room', resData.room.id);
       sessionStorage.setItem('client_token', resData.token);

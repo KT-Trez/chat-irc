@@ -14,43 +14,46 @@ router.get('/listenClients', (req, res) => {
   if (!req.query.room || !req.query.token) return res.sendStatus(404);
 
   let room = Room.list.find(room => room.id == req.query.room);
-  let client = room ? room.clients.find(client => client.token == req.query.token) : null;
+  let clientData = room ? room.clients.find(clientData => clientData.client.token == req.query.token) : null;
 
-  if (room && client) {
+  if (room && clientData) {
     let headers = {
       'Content-Type': 'text/event-stream',
       'Connection': 'keep-alive',
       'Cache-Control': 'no-cache'
     };
     res.writeHead(200, headers);
+    clientData.res = res;
 
-    let clientData = {
-      client,
-      res
+
+    let messageData = {
+      content: 'Użytkownik {{userNick}} dołączył!',
+      data: clientData.client.nick,
+      type: 'join'
     };
-    room.resEventsList.push(clientData);
+    new Message(clientData.client, messageData, room).send(room);
 
-    let resData = {
-      client: Client.stripSensitiveInfo(client, room),
+    let data = {
+      client: Client.stripSensitiveInfo(clientData.client, room),
       type: 'joined'
     };
-    room.resEventsList.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(resData)}\n\n`));
+    room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
 
     req.on('close', () => {
-      let resData = {
-        client: Client.stripSensitiveInfo(client, room),
-        type: 'left'
-      };
-      room.resEventsList.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(resData)}\n\n`));
+      room.clients.splice(room.clients.indexOf(clientData), 1);
+
       let messageData = {
         content: 'Użytkownik {{userNick}} wyszedł!',
-        data: client.nick,
+        data: clientData.client.nick,
         type: 'leave'
       };
-      new Message(client, messageData, room).send(room);
+      new Message(clientData.client, messageData, room).send(room);
 
-      let leftClient = room.resEventsList.find(data => data.id == client.id);
-      room.resEventsList.splice(room.resEventsList.indexOf(leftClient));
+      let data = {
+        client: Client.stripSensitiveInfo(clientData.client, room),
+        type: 'left'
+      };
+      room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
     });
   };
 });
@@ -62,9 +65,9 @@ router.post('/listenMessages', (req, res) => {
     let reqData = JSON.parse(data);
 
     let room = Room.list.find(room => room.id == reqData.room);
-    let client = room ? room.clients.find(client => client.token == reqData.token) : null;
+    let clientData = room ? room.clients.find(clientData => clientData.client.token == reqData.token) : null;
 
-    if (room && client) {
+    if (room && clientData) {
       room.resList.push(res);
       setTimeout(() => {
         let wantedRes = room.resList.find(searchedRes => searchedRes == res);

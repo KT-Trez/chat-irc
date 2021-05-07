@@ -2,7 +2,10 @@ module.exports = class Client {
   static list = [];
 
   static join(client, room) {
-    room.clients.push(client);
+    room.clients.push({
+      client: client,
+      res: null
+    });
   }
 
   static stripSensitiveInfo(client) {
@@ -34,7 +37,10 @@ module.exports = class Client {
   }
 
   join(room) {
-    room.clients.push(this);
+    room.clients.push({
+      client: this,
+      res: null
+    });
   }
 
 }

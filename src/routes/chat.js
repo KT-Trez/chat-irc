@@ -16,10 +16,10 @@ router.post('/color', (req, res) => {
     let reqData = JSON.parse(data);
 
     let room = Room.list.find(room => room.id == reqData.room);
-    let client = room ? room.clients.find(client => client.token == reqData.token) : null;
+    let clientData = room ? room.clients.find(clientData => clientData.client.token == reqData.token) : null;
 
-    if (room && client && reqData.color) {
-      client.color = reqData.color;
+    if (room && clientData.client && reqData.color) {
+      clientData.client.color = reqData.color;
 
       res.sendStatus(200);
     } else
@@ -31,14 +31,13 @@ router.post('/message', (req, res) => {
   req.on('data', data => {
     if (!Utils.isJSONValid(data, 'chat-message'))
       return res.sendStatus(400);
-
     let reqData = JSON.parse(data);
 
     let room = Room.list.find(room => room.id == reqData.room);
-    let client = room ? room.clients.find(client => client.token == reqData.token) : null;
+    let clientData = room ? room.clients.find(clientData => clientData.client.token == reqData.token) : null;
 
-    if (room && client) {
-      let message = new Message(client, reqData, room).emojify().send(room);
+    if (room && clientData) {
+      let message = new Message(clientData.client, reqData, room).emojify().send(room);
 
       Database.write(message);
       res.sendStatus(200);
