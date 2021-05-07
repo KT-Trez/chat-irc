@@ -5,6 +5,7 @@ import Command from '../classes/Commands.js'
 import Listener from '../classes/Listener.js'
 import Message from '../classes/Message.js'
 
+import client from '../templates/client.js'
 import message from '../templates/message.js'
 
 const template = { // eskportowany szablon startowy
@@ -15,8 +16,9 @@ const template = { // eskportowany szablon startowy
       if (!nickInput.value)
         return this.lightInput(nickInput);
       else {
-        await Client.init(nickInput.value)
-        this.startAll(nickInput.value);
+        await Client.init(nickInput.value);
+        await client.data.loadAll(await Client.getAll());
+        this.startAll();
       };
     },
     lightInput(input) {
@@ -58,6 +60,7 @@ const template = { // eskportowany szablon startowy
         .addEventListener('keydown', (event) => event.key.toLowerCase() == 'enter' ? this.sendMessage() : null);
 
       Command.mapCommands();
+      Listener.listenClients();
       Listener.listenMessage();
     }
   },

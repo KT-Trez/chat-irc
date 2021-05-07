@@ -2,9 +2,19 @@
 console.log('Loaded: Listener.js');
 import Utils from '../components/utils.js'
 
+import client from '../templates/client.js'
 import message from '../templates/message.js'
 
 export default class Listener {
+
+  static listenClients() {
+    let eventSource = new EventSource('/listen/listenClients?' + `room=${sessionStorage.getItem('client_room')}&token=${sessionStorage.getItem('client_token')}`);
+
+    eventSource.onmessage = (event) => {
+      let resData = JSON.parse(event.data);
+      client.mount(resData.type, resData.client);
+    };
+  }
 
   static async listenMessage() {
     console.log(`${Utils.fullTime(new Date())} [WORKING] Listening for messages.`);
@@ -20,7 +30,7 @@ export default class Listener {
 
       let reqData = {
         room: sessionStorage.getItem('client_room'),
-        token: sessionStorage.getItem('client_token'),
+        token: sessionStorage.getItem('client_token')
       };
 
       let res = await fetch('/listen/listenMessages', {

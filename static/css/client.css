@@ -1,0 +1,28 @@
+.client {
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px dotted #666666;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.client__status {
+  background-color: white;
+  height: 10px;
+  width: 10px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
+
+.client__nick {
+  width: calc(100% - 12px);
+  font-family: 'Dosis--medium';
+  font-size: 13px;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-left: 5px;
+  margin-right: 5px;
+}

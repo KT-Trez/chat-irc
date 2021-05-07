@@ -10,11 +10,11 @@ module.exports = class Client {
       color: client.color,
       nick: client.nick,
       id: client.id,
-      lastOnline: client.lastOnline,
       room: {
         id: client.room.id,
         timestamp: client.room.timestamp
       },
+      status: client.status,
       token: client.token
     };
   }
@@ -23,11 +23,11 @@ module.exports = class Client {
     this.color = null;
     this.nick = client.nick;
     this.id = new Date().getTime() + (Math.random() * 1000).toFixed(0);
-    this.lastOnline = new Date();
     this.room = {
       id: room.id,
       timestamp: room.timestamp
     };
+    this.status = 'online';
     this.token = new Date().getTime() + (Math.random() * 1000).toFixed(0);
 
     if (room) Client.join(this, room);

@@ -3,12 +3,8 @@ console.log('Loaded template: message.js');
 import Utils from '../components/utils.js'
 
 const template = { // eskportowany szablon wiadomości czatu
-  data: {
-
-  },
-  async action() { // uruchomiony szablon
-
-  },
+  data: {},
+  async action() {}, // uruchomiony szablon
   mount(type, context) { // montowanie i uruchamianie szablonu
     let message = null;
     switch (type) {
@@ -29,6 +25,16 @@ const template = { // eskportowany szablon wiadomości czatu
           .replace('{{authorData}}', '')
           .replace('{{messageAuthor}}', '')
           .replace('{{messageContent}}', `<span style="color: #43b582;">${context.content}</span>`)
+          .replace('{{userNick}}', `<span style="font-family: 'Dosis--bold';">${context.data}</span>`);
+        break
+      case 'leave':
+        message = this.template
+          .replace('{{messageData}}', '')
+          .replace('{{messageId}}', context.id)
+          .replace('{{messageTimestamp}}', Utils.timeShort(new Date(context.timestamp)))
+          .replace('{{authorData}}', '')
+          .replace('{{messageAuthor}}', '')
+          .replace('{{messageContent}}', `<span style="color: #f04747;">${context.content}</span>`)
           .replace('{{userNick}}', `<span style="font-family: 'Dosis--bold';">${context.data}</span>`);
         break
       case 'message':

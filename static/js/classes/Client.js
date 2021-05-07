@@ -33,4 +33,26 @@ export default class Client {
     };
   }
 
+  static async getAll() {
+    console.log(`${Utils.fullTime(new Date())} [WORKING] Getting all clients.`);
+
+    let reqData = {
+      room: sessionStorage.getItem('client_room'),
+      token: sessionStorage.getItem('client_token')
+    };
+
+    let res = await fetch('/join/getClients', {
+      body: JSON.stringify(reqData),
+      method: 'post'
+    });
+
+    if (res.ok) {
+      console.log(`${Utils.fullTime(new Date())} [SUCCESS] Got all clients.`);
+      return await res.json();
+    } else {
+      console.log(`${Utils.fullTime(new Date())} [ERROR] Failed to get all clients.`);
+      document.getElementById('js-root__info').innerText = 'Niepowodzenie podczas pobierania listy klientów.';
+    };
+  }
+
 }

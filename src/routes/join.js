@@ -9,11 +9,26 @@ const Utils = require('../components/utils');
 const router = express.Router();
 
 
+router.post('/getClients', (req, res) => {
+  req.on('data', data => {
+    if (!Utils.isJSONValid(data, 'join-getClients'))
+      return res.sendStatus(400);
+    let reqData = JSON.parse(data);
+
+    let room = Room.list.find(room => room.id == reqData.room);
+    let client = room ? room.clients.find(client => client.token == reqData.token) : null;
+
+    if (room && client) {
+      let clientList = room.resEventsList.map(data => data.client);
+      res.send(JSON.stringify(clientList));
+    };
+  });
+});
+
 router.post('/register', (req, res) => {
   req.on('data', data => {
-    if (!Utils.isJSONValid(data, 'join'))
+    if (!Utils.isJSONValid(data, 'join-register'))
       return res.sendStatus(400);
-
     let reqData = JSON.parse(data);
 
     let general = Room.getGeneral();

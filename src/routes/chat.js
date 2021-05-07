@@ -13,7 +13,6 @@ router.post('/color', (req, res) => {
   req.on('data', data => {
     if (!Utils.isJSONValid(data, 'chat-color'))
       return res.sendStatus(400);
-
     let reqData = JSON.parse(data);
 
     let room = Room.list.find(room => room.id == reqData.room);

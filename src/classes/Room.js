@@ -20,6 +20,7 @@ module.exports = class Room {
     this.id = new Date().getTime() + (Math.random() * 1000).toFixed(0);
     this.messagesCount = 0;
     this.resList = [];
+    this.resEventsList = [];
     this.timestamp = new Date();
   }
 
