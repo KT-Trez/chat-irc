@@ -16,33 +16,38 @@ export default class Listener {
       this.listenMessage();
     }, 20000);
 
-    let reqData = {
-      room: sessionStorage.getItem('client_room'),
-      token: sessionStorage.getItem('client_token'),
-    };
+    try {
 
-    let res = await fetch('/listen/listenMessages', {
-      body: JSON.stringify(reqData),
-      method: 'post',
-      signal
-    });
+      let reqData = {
+        room: sessionStorage.getItem('client_room'),
+        token: sessionStorage.getItem('client_token'),
+      };
 
-    clearInterval(abort);
-    if (res.ok) {
-      this.listenMessage();
-      console.log(`${Utils.fullTime(new Date())} [SUCCESS] Recived message.`);
+      let res = await fetch('/listen/listenMessages', {
+        body: JSON.stringify(reqData),
+        method: 'post',
+        signal
+      });
 
-      let resData = await res.json();
-      if (!sessionStorage.getItem('last_message'))
+      clearInterval(abort);
+      if (res.ok) {
+        this.listenMessage();
+        console.log(`${Utils.fullTime(new Date())} [SUCCESS] Recived message.`);
+
+        let resData = await res.json();
+        if (!sessionStorage.getItem('last_message'))
+          sessionStorage.setItem('last_message', resData.orderNumber);
+        else if (parseInt(sessionStorage.getItem('last_message')) + 1 != resData.orderNumber)
+          Listener.recoverMessages(sessionStorage.getItem('last_message'), resData.orderNumber);
         sessionStorage.setItem('last_message', resData.orderNumber);
-      else if (parseInt(sessionStorage.getItem('last_message')) + 1 != resData.orderNumber)
-        Listener.recoverMessages(sessionStorage.getItem('last_message'), resData.orderNumber);
-      sessionStorage.setItem('last_message', resData.orderNumber);
 
-      message.mount(resData.type, resData);
-    } else {
-      console.log(`${Utils.fullTime(new Date())} [ERROR] Failed to recive message.`);
-      document.getElementById('js-root__info').innerText = 'Brak połączenia';
+        message.mount(resData.type, resData);
+      };
+    } catch (err) {
+      if (err.name != 'AbortError') {
+        console.log(`${Utils.fullTime(new Date())} [ERROR] Failed to recive message.`);
+        document.getElementById('js-root__info').innerText = 'Brak połączenia';
+      };
     };
   }
 

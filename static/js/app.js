@@ -1,8 +1,8 @@
 "use strict";
-import nick from './templates/nick.js'
+import start from './templates/start.js'
 
 window.addEventListener('DOMContentLoaded', async () => {
   console.log('Loaded: app.js');
 
-  nick.mount();
+  start.mount();
 });

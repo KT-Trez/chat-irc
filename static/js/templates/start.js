@@ -1,10 +1,13 @@
 "use strict";
-console.log('Loaded template: nick.js');
+console.log('Loaded template: start.js');
 import Client from '../classes/Client.js'
+import Command from '../classes/Commands.js'
 import Listener from '../classes/Listener.js'
 import Message from '../classes/Message.js'
 
-const template = { // eskportowany szablon pola wprowadź nick
+import message from '../templates/message.js'
+
+const template = { // eskportowany szablon startowy
   data: {
     async joinRoom() {
       let nickInput = document.getElementById('js-nick-container__nick__inputs--nick');
@@ -22,7 +25,21 @@ const template = { // eskportowany szablon pola wprowadź nick
     },
     sendMessage() {
       let messageInput = document.getElementById('js-root__chat__input__message');
-      if (messageInput.value) {
+
+      if (messageInput.value.startsWith('/')) {
+        let command = messageInput.value.split(' ');
+        let args = command.slice(1);
+        let commandName = command[0].slice(1);
+
+        if (Command.commandList.includes(commandName)) {
+          new Command()[commandName](false, args);
+          messageInput.value = '';
+        } else
+          message.mount('info', {
+            color: 'red',
+            content: 'Nie ma takiej komendy'
+          });
+      } else if (messageInput.value) {
         new Message(messageInput.value).send()
         messageInput.value = '';
       };
@@ -40,6 +57,7 @@ const template = { // eskportowany szablon pola wprowadź nick
       document.getElementById('js-root__chat__input__message')
         .addEventListener('keydown', (event) => event.key.toLowerCase() == 'enter' ? this.sendMessage() : null);
 
+      Command.mapCommands();
       Listener.listenMessage();
     }
   },
@@ -51,7 +69,7 @@ const template = { // eskportowany szablon pola wprowadź nick
     document.getElementById('js-root__chat__messages').innerHTML = this.template;
     this.action();
   },
-  template: // szablon pola wprowadź nick
+  template: // szablon startowy
     `
     <div class="nick-container">
       <div class="nick-container__nick">

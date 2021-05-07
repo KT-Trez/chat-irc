@@ -1,5 +1,21 @@
 module.exports = class Message {
 
+  static queue = [];
+
+  static executeQueue(queueRoom) {
+    let data = queueRoom.messages[0];
+
+    if (data) {
+      data.room.messagesCount++;
+      data.room.resList.forEach(res => res.send(data.message));
+      data.room.resList = [];
+
+      queueRoom.messages.splice(queueRoom.messages.indexOf(data), 1);
+      Message.executeQueue(queueRoom);
+    } else
+      Message.queue.splice(Message.queue.indexOf(queueRoom, 1));
+  }
+
   constructor(client, message, room) {
     this.client = {
       color: client.color,
@@ -43,11 +59,23 @@ module.exports = class Message {
   }
 
   send(room) {
-    let recipientList = [...room.resList];
-    room.resList = [];
-    room.messagesCount++;
+    let queueRoom = Message.queue.find(queueRoom => queueRoom.id == room.id);
 
-    recipientList.forEach(res => !res.headerSent ? res.send(this) : null);
+    if (!queueRoom) {
+      queueRoom = {
+        id: room.id,
+        messages: []
+      };
+
+      Message.queue.push(queueRoom);
+    };
+
+    queueRoom.messages.push({
+      message: this,
+      room
+    });
+    Message.executeQueue(queueRoom);
+
     return this;
   }
 
