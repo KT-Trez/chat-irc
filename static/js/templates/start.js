@@ -19,6 +19,7 @@ const template = { // eskportowany szablon startowy
         await Client.init(nickInput.value);
         this.startAll();
         await client.data.loadAll(await Client.getAll());
+        client.mount();
       };
     },
     lightInput(input) {

@@ -1,8 +1,13 @@
 "use strict";
 console.log('Loaded template: client.js');
+import Client from '../classes/Client.js'
 
 const template = { // eskportowany szablon klienta
   data: {
+    status: {
+      interval: null,
+      timeout: null
+    },
     async loadAll(clientList) {
       clientList.forEach(client => {
         let clientDOM = template.template
@@ -15,6 +20,23 @@ const template = { // eskportowany szablon klienta
       });
       this.sortClients();
     },
+    setAFK() {
+      if (sessionStorage.getItem('client_status') != 'afk') {
+        sessionStorage.setItem('client_status', 'afk');
+        Client.setStatus('afk');
+        document.getElementById('js-root__controls__nick--status').classList.add('js-afk');
+      };
+    },
+    setOnline() {
+      if (sessionStorage.getItem('client_status') != 'online') {
+        clearTimeout(this.status.timeout);
+        this.status.timeout = null;
+
+        sessionStorage.setItem('client_status', 'online');
+        Client.setStatus('online');
+        document.getElementById('js-root__controls__nick--status').classList.remove('js-afk');
+      };
+    },
     sortClients() {
       let clientField = document.getElementById('root__controls__clients');
       let clientFieldChildren = clientField.children;
@@ -24,23 +46,39 @@ const template = { // eskportowany szablon klienta
       clientFieldChildrenArray.forEach(client => clientField.appendChild(client));
     }
   },
-  mount(type, context) { // montowanie i uruchamianie szablonu
+  action(type, context) { // powtarzalne wywoływanie szablonu
     switch (type) {
       case 'joined':
-        let client = this.template
+        let clientJoined = this.template
           .replace('{{clientId}}', context.id)
           .replace('{{clientStatus}}', 'js-' + context.status)
           .replace('{{clientNick}}', context.nick);
 
         let clientField = document.getElementById('root__controls__clients');
-        clientField.innerHTML += client;
+        clientField.innerHTML += clientJoined;
         this.data.sortClients();
         break;
       case 'left':
-        let clientDOM = document.querySelector(`[dataset-client-id="${context.id}"]`);
-        if (clientDOM) clientDOM.remove();
+        let clientLeft = document.querySelector(`[dataset-client-id="${context.id}"]`);
+        if (clientLeft) clientLeft.remove();
+        break;
+      case 'status':
+        let clientStatus = document.querySelector(`[dataset-client-id="${context.id}"]`);
+        if (clientStatus) {
+          clientStatus.children[0].classList.remove('js-online', 'js-afk', 'js-dnd')
+          clientStatus.children[0].classList.add('js-' + context.status);
+        };
         break;
     };
+  },
+  mount() { // jednorazowe wywoływanie szablonu
+    this.data.status.interval = setInterval(() => {
+      if (!document.hasFocus() && !this.data.status.timeout)
+        this.data.status.timeout = setTimeout(() => this.data.setAFK(), 300000);
+      else if (document.hasFocus()) {
+        this.data.setOnline();
+      };
+    }, 5000);
   },
   template: // szablon klienta
     `

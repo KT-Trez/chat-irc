@@ -12,7 +12,7 @@ export default class Listener {
 
     eventSource.onmessage = (event) => {
       let resData = JSON.parse(event.data);
-      client.mount(resData.type, resData.client);
+      client.action(resData.type, resData.client);
     };
   }
 
