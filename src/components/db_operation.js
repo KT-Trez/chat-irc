@@ -5,6 +5,15 @@ const Utils = require('./utils');
 module.exports = class Database {
   static list = [];
 
+  static countMessages(room) {
+    let db = this.pickDB(room.id);
+
+    db.find({}, async (err, docs) => {
+      if (err) console.error(Utils.logLevelBg(4) + `${Utils.fullTimeAndDate(new Date())} [ERROR] Failed to save message in database.` + Utils.logLevelBg('end'));
+      room.messagesCount = docs.length;
+    });
+  }
+
   static loadDB(name) { // zapisuje używaną bazę danych do pamięci
     let db = new Datastore({ // ładuje bazę danych
       autoload: true,

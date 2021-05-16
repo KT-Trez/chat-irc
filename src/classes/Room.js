@@ -1,3 +1,5 @@
+const Database = require('../components/db_operation');
+
 module.exports = class Room {
   static list = [];
 
@@ -7,18 +9,17 @@ module.exports = class Room {
     if (generalIfExists)
       return generalIfExists;
     else {
-      let general = new Room();
-      general.id = 'general';
+      let general = new Room('general');
       Room.list.push(general);
       return general;
     };
   }
 
-  constructor() {
+  constructor(id) {
     this.clients = [];
     this.expireTimeout = setTimeout(() => Room.list.splice(Room.list.indexOf(this), 1), 3600000);
-    this.id = new Date().getTime() + (Math.random() * 1000).toFixed(0);
-    this.messagesCount = 0;
+    this.id = id || new Date().getTime() + (Math.random() * 1000).toFixed(0);
+    this.messagesCount = Database.countMessages(this);
     this.resList = [];
     this.disconnectedTimeouts = [];
     this.timestamp = new Date();

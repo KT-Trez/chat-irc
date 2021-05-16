@@ -2,6 +2,8 @@
 console.log('Loaded template: client.js');
 import Client from '../classes/Client.js'
 
+import Utils from '../components/utils.js'
+
 const template = { // eskportowany szablon klienta
   data: {
     status: {

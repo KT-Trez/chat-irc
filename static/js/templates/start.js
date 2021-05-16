@@ -22,6 +22,28 @@ const template = { // eskportowany szablon startowy
         client.mount();
       };
     },
+    leaveRoom() {
+      document.getElementById('js-root__chat__input__button--emoji').setAttribute('disabled', true);
+      document.getElementById('js-root__chat__input__message').disabled = true;
+      document.getElementById('js-root__controls__buttons__button--leave').disabled = true;
+      document.getElementById('js-root__chat__input__button--send').setAttribute('disabled', true);
+
+      document.getElementById('js-root__info').innerText = 'Opuszczono kanał';
+      document.getElementById('js-root__controls__room__id--display-id').innerText = '- - -';
+      document.getElementById('root__controls__clients').innerHTML = '';
+      document.getElementById('js-root__chat__messages').innerText = '';
+      document.getElementById('js-root__chat__messages').innerText = '';
+
+      document.getElementById('js-root__controls__buttons__button--leave').onclick = null;
+
+      document.getElementById('js-root__chat__input__button--send').onclick = null;
+      document.getElementById('js-root__chat__input__message').onclick = null;
+
+      sessionStorage.removeItem('client_room');
+      sessionStorage.removeItem('last_message');
+
+      Listener.data.eventSource.close();
+    },
     lightInput(input) {
       input.classList.add('js-require');
       setTimeout(() => input.classList.remove('js-require'), 1000);
@@ -56,10 +78,10 @@ const template = { // eskportowany szablon startowy
       document.getElementById('js-root__controls__nick--nick').innerText = sessionStorage.getItem('client_nick');
       document.getElementById('js-root__chat__messages').innerText = '';
 
-      document.getElementById('js-root__chat__input__button--send')
-        .addEventListener('click', () => this.sendMessage());
-      document.getElementById('js-root__chat__input__message')
-        .addEventListener('keydown', (event) => event.key.toLowerCase() == 'enter' ? this.sendMessage() : null);
+      document.getElementById('js-root__controls__buttons__button--leave').onclick = () => this.leaveRoom();
+
+      document.getElementById('js-root__chat__input__button--send').onclick = () => this.sendMessage()
+      document.getElementById('js-root__chat__input__message').onkeydown = (event) => event.key.toLowerCase() == 'enter' ? this.sendMessage() : null;
 
       Command.mapCommands();
       Listener.listenClients();

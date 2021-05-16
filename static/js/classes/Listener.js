@@ -6,17 +6,21 @@ import client from '../templates/client.js'
 import message from '../templates/message.js'
 
 export default class Listener {
+  static data = {
+    eventSource: null
+  };
 
   static listenClients() {
-    let eventSource = new EventSource('/listen/listenClients?' + `room=${sessionStorage.getItem('client_room')}&token=${sessionStorage.getItem('client_token')}`);
+    Listener.data.eventSource = new EventSource('/listen/listenClients?' + `room=${sessionStorage.getItem('client_room')}&token=${sessionStorage.getItem('client_token')}`);
 
-    eventSource.onmessage = (event) => {
+    Listener.data.eventSource.onmessage = (event) => {
       let resData = JSON.parse(event.data);
       client.action(resData.type, resData.client);
     };
   }
 
   static async listenMessage() {
+    if (!sessionStorage.getItem('client_room')) return;
     console.log(`${Utils.fullTime(new Date())} [WORKING] Listening for messages.`);
 
     const controller = new AbortController();
@@ -27,7 +31,6 @@ export default class Listener {
     }, 20000);
 
     try {
-
       let reqData = {
         room: sessionStorage.getItem('client_room'),
         token: sessionStorage.getItem('client_token')

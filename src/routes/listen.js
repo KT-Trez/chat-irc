@@ -102,8 +102,10 @@ router.post('/reconnect', (req, res) => {
 
     if (room && clientData) {
       let timeout = room.disconnectedTimeouts.find(timeout => timeout.token == clientData.client.token);
-      clearTimeout(timeout.timeout);
-      room.disconnectedTimeouts.splice(room.disconnectedTimeouts.indexOf(timeout), 1);
+      if (timeout) {
+        clearTimeout(timeout.timeout);
+        room.disconnectedTimeouts.splice(room.disconnectedTimeouts.indexOf(timeout), 1);
+      };
     };
   });
 });
