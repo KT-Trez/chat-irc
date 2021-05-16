@@ -11,6 +11,9 @@
     "nedb": "^1.8.0"
   },
   "description": "Internet Relay Chat.",
+  "engines": {
+    "node": "16.x"
+  },
   "homepage": "https://github.com/KT-Trez/Chat_IRC#readme",
   "keywords": [
     "chat",

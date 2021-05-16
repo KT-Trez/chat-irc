@@ -17,12 +17,13 @@ router.get('/listenClients', (req, res) => {
   let clientData = room ? room.clients.find(clientData => clientData.client.token == req.query.token) : null;
 
   if (room && clientData) {
-    let headers = {
+    res.set({
       'Content-Type': 'text/event-stream',
       'Connection': 'keep-alive',
-      'Cache-Control': 'no-cache'
-    };
-    res.writeHead(200, headers);
+      'Cache-Control': 'no-cache',
+      'Transfer-Encoding': 'chunked'
+    });
+    res.write('\n');
     clientData.res = res;
 
 
@@ -40,33 +41,20 @@ router.get('/listenClients', (req, res) => {
     room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
 
     req.on('close', () => {
-      setTimeout(() => {
-        let data = {
-          client: Client.stripSensitiveInfo(clientData.client, room),
-          type: 'disconnected'
-        };
-        room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
+      room.clients.splice(room.clients.indexOf(clientData), 1);
 
-        room.disconnectedTimeouts.push({
-          timeout: setTimeout(() => {
-            room.clients.splice(room.clients.indexOf(clientData), 1);
+      let messageData = {
+        content: 'Użytkownik {{userNick}} wyszedł!',
+        data: clientData.client.nick,
+        type: 'leave'
+      };
+      new Message(clientData.client, messageData, room).send(room);
 
-            let messageData = {
-              content: 'Użytkownik {{userNick}} wyszedł!',
-              data: clientData.client.nick,
-              type: 'leave'
-            };
-            new Message(clientData.client, messageData, room).send(room);
-
-            let data = {
-              client: Client.stripSensitiveInfo(clientData.client, room),
-              type: 'left'
-            };
-            room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
-          }, 5000),
-          token: clientData.client.token
-        });
-      }, 5000);
+      let data = {
+        client: Client.stripSensitiveInfo(clientData.client, room),
+        type: 'left'
+      };
+      room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
     });
   };
 });
@@ -90,26 +78,6 @@ router.post('/listenMessages', (req, res) => {
     };
   });
 });
-
-router.post('/reconnect', (req, res) => {
-  req.on('data', data => {
-    if (!Utils.isJSONValid(data, 'listen-reconnect'))
-      return res.sendStatus(400);
-    let reqData = JSON.parse(data);
-
-    let room = Room.list.find(room => room.id == reqData.room);
-    let clientData = room ? room.clients.find(clientData => clientData.client.token == reqData.token) : null;
-
-    if (room && clientData) {
-      let timeout = room.disconnectedTimeouts.find(timeout => timeout.token == clientData.client.token);
-      if (timeout) {
-        clearTimeout(timeout.timeout);
-        room.disconnectedTimeouts.splice(room.disconnectedTimeouts.indexOf(timeout), 1);
-      };
-    };
-  });
-});
-
 
 module.exports = {
   router

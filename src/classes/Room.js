@@ -21,7 +21,6 @@ module.exports = class Room {
     this.id = id || new Date().getTime() + (Math.random() * 1000).toFixed(0);
     this.messagesCount = Database.countMessages(this);
     this.resList = [];
-    this.disconnectedTimeouts = [];
     this.timestamp = new Date();
   }
 
