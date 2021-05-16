@@ -1,3 +1,4 @@
+const compression = require('compression');
 const express = require('express');
 
 const Client = require('../classes/Client');
@@ -7,6 +8,7 @@ const Room = require('../classes/Room');
 const Utils = require('../components/utils');
 
 const router = express.Router();
+router.use(compression());
 
 
 router.get('/listenClients', (req, res) => {
@@ -17,12 +19,12 @@ router.get('/listenClients', (req, res) => {
   let clientData = room ? room.clients.find(clientData => clientData.client.token == req.query.token) : null;
 
   if (room && clientData) {
-    let headers = {
+    res.set({
       'Content-Type': 'text/event-stream',
       'Connection': 'keep-alive',
       'Cache-Control': 'no-cache'
-    };
-    res.writeHead(200, headers);
+    });
+    res.write('\n');
     clientData.res = res;
 
 
@@ -37,38 +39,30 @@ router.get('/listenClients', (req, res) => {
       client: Client.stripSensitiveInfo(clientData.client, room),
       type: 'joined'
     };
-    room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
+    room.clients.forEach(eventClient => {
+      eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`);
+      eventClient.res.flush();
+    });
 
     req.on('close', () => {
-      setTimeout(() => {
-        let data = {
-          client: Client.stripSensitiveInfo(clientData.client, room),
-          type: 'disconnected'
-        };
-        room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
-        console.log('Utracono połączenie');
+      console.log('Wyrzucono');
+      room.clients.splice(room.clients.indexOf(clientData), 1);
 
-        room.disconnectedTimeouts.push({
-          timeout: setTimeout(() => {
-            console.log('Wyrzucono');
-            room.clients.splice(room.clients.indexOf(clientData), 1);
+      let messageData = {
+        content: 'Użytkownik {{userNick}} wyszedł!',
+        data: clientData.client.nick,
+        type: 'leave'
+      };
+      new Message(clientData.client, messageData, room).send(room);
 
-            let messageData = {
-              content: 'Użytkownik {{userNick}} wyszedł!',
-              data: clientData.client.nick,
-              type: 'leave'
-            };
-            new Message(clientData.client, messageData, room).send(room);
-
-            let data = {
-              client: Client.stripSensitiveInfo(clientData.client, room),
-              type: 'left'
-            };
-            room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
-          }, 5000),
-          token: clientData.client.token
-        });
-      }, 5000);
+      let data = {
+        client: Client.stripSensitiveInfo(clientData.client, room),
+        type: 'left'
+      };
+      room.clients.forEach(eventClient => {
+        eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`);
+        eventClient.res.flush();
+      });
     });
   };
 });
@@ -92,26 +86,6 @@ router.post('/listenMessages', (req, res) => {
     };
   });
 });
-
-router.post('/reconnect', (req, res) => {
-  req.on('data', data => {
-    if (!Utils.isJSONValid(data, 'listen-reconnect'))
-      return res.sendStatus(400);
-    let reqData = JSON.parse(data);
-
-    let room = Room.list.find(room => room.id == reqData.room);
-    let clientData = room ? room.clients.find(clientData => clientData.client.token == reqData.token) : null;
-
-    if (room && clientData) {
-      let timeout = room.disconnectedTimeouts.find(timeout => timeout.token == clientData.client.token);
-      if (timeout) {
-        clearTimeout(timeout.timeout);
-        room.disconnectedTimeouts.splice(room.disconnectedTimeouts.indexOf(timeout), 1);
-      };
-    };
-  });
-});
-
 
 module.exports = {
   router
