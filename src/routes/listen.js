@@ -1,4 +1,3 @@
-const compression = require('compression');
 const express = require('express');
 
 const Client = require('../classes/Client');
@@ -8,7 +7,6 @@ const Room = require('../classes/Room');
 const Utils = require('../components/utils');
 
 const router = express.Router();
-router.use(compression());
 
 
 router.get('/listenClients', (req, res) => {
@@ -22,7 +20,8 @@ router.get('/listenClients', (req, res) => {
     res.set({
       'Content-Type': 'text/event-stream',
       'Connection': 'keep-alive',
-      'Cache-Control': 'no-cache'
+      'Cache-Control': 'no-cache',
+      'Transfer-Encoding': 'Chucked'
     });
     res.write('\n');
     clientData.res = res;
@@ -39,10 +38,7 @@ router.get('/listenClients', (req, res) => {
       client: Client.stripSensitiveInfo(clientData.client, room),
       type: 'joined'
     };
-    room.clients.forEach(eventClient => {
-      eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`);
-      eventClient.res.flush();
-    });
+    room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
 
     req.on('close', () => {
       console.log('Wyrzucono');
@@ -59,10 +55,7 @@ router.get('/listenClients', (req, res) => {
         client: Client.stripSensitiveInfo(clientData.client, room),
         type: 'left'
       };
-      room.clients.forEach(eventClient => {
-        eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`);
-        eventClient.res.flush();
-      });
+      room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
     });
   };
 });
