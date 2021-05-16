@@ -20,6 +20,26 @@ const template = { // eskportowany szablon klienta
       });
       this.sortClients();
     },
+    async reconnect() {
+      console.log(`${Utils.fullTime(new Date())} [WORKING] Attempting to reconnect.`);
+
+      let reqData = {
+        room: sessionStorage.getItem('client_room'),
+        token: sessionStorage.getItem('client_token')
+      };
+
+      let res = await fetch('/listen/reconnect', {
+        body: JSON.stringify(reqData),
+        method: 'post'
+      });
+
+      if (res.ok)
+        console.log(`${Utils.fullTime(new Date())} [SUCCESS] Reconnected.`);
+      else {
+        console.log(`${Utils.fullTime(new Date())} [ERROR] Failed to reconnect as '${nick}'.`);
+        document.getElementById('js-root__info').innerText = 'Utracono połączenie z serwerem';
+      };
+    },
     setAFK() {
       if (sessionStorage.getItem('client_status') != 'afk') {
         sessionStorage.setItem('client_status', 'afk');
@@ -48,6 +68,9 @@ const template = { // eskportowany szablon klienta
   },
   action(type, context) { // powtarzalne wywoływanie szablonu
     switch (type) {
+      case 'disconnected':
+        this.data.reconnect();
+        break;
       case 'joined':
         let clientJoined = this.template
           .replace('{{clientId}}', context.id)

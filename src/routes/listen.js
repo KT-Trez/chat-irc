@@ -40,20 +40,33 @@ router.get('/listenClients', (req, res) => {
     room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
 
     req.on('close', () => {
-      room.clients.splice(room.clients.indexOf(clientData), 1);
+      setTimeout(() => {
+        let data = {
+          client: Client.stripSensitiveInfo(clientData.client, room),
+          type: 'disconnected'
+        };
+        room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
 
-      let messageData = {
-        content: 'Użytkownik {{userNick}} wyszedł!',
-        data: clientData.client.nick,
-        type: 'leave'
-      };
-      new Message(clientData.client, messageData, room).send(room);
+        room.disconnectedTimeouts.push({
+          timeout: setTimeout(() => {
+            room.clients.splice(room.clients.indexOf(clientData), 1);
 
-      let data = {
-        client: Client.stripSensitiveInfo(clientData.client, room),
-        type: 'left'
-      };
-      room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
+            let messageData = {
+              content: 'Użytkownik {{userNick}} wyszedł!',
+              data: clientData.client.nick,
+              type: 'leave'
+            };
+            new Message(clientData.client, messageData, room).send(room);
+
+            let data = {
+              client: Client.stripSensitiveInfo(clientData.client, room),
+              type: 'left'
+            };
+            room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
+          }, 5000),
+          token: clientData.client.token
+        });
+      }, 5000);
     });
   };
 });
@@ -74,6 +87,23 @@ router.post('/listenMessages', (req, res) => {
         if (wantedRes)
           room.resList.splice(room.resList.indexOf(wantedRes), 1);
       }, 25000);
+    };
+  });
+});
+
+router.post('/reconnect', (req, res) => {
+  req.on('data', data => {
+    if (!Utils.isJSONValid(data, 'listen-reconnect'))
+      return res.sendStatus(400);
+    let reqData = JSON.parse(data);
+
+    let room = Room.list.find(room => room.id == reqData.room);
+    let clientData = room ? room.clients.find(clientData => clientData.client.token == reqData.token) : null;
+
+    if (room && clientData) {
+      let timeout = room.disconnectedTimeouts.find(timeout => timeout.token == clientData.client.token);
+      clearTimeout(timeout.timeout);
+      room.disconnectedTimeouts.splice(room.disconnectedTimeouts.indexOf(timeout), 1);
     };
   });
 });

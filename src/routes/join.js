@@ -46,7 +46,7 @@ router.post('/status', (req, res) => {
     let room = Room.list.find(room => room.id == reqData.room);
     let clientData = room ? room.clients.find(clientData => clientData.client.token == reqData.token) : null;
 
-    if (room && clientData.client && reqData.status) {
+    if (room && clientData && reqData.status) {
       clientData.client.status = reqData.status;
 
       let data = {
