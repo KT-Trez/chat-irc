@@ -46,9 +46,11 @@ router.get('/listenClients', (req, res) => {
           type: 'disconnected'
         };
         room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
+        console.log('Utracono połączenie');
 
         room.disconnectedTimeouts.push({
           timeout: setTimeout(() => {
+            console.log('Wyrzucono');
             room.clients.splice(room.clients.indexOf(clientData), 1);
 
             let messageData = {
