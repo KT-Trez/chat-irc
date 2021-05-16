@@ -13,6 +13,8 @@ export default class Listener {
   static listenClients() {
     Listener.data.eventSource = new EventSource('/listen/listenClients?' + `room=${sessionStorage.getItem('client_room')}&token=${sessionStorage.getItem('client_token')}`);
 
+    Listener.data.eventSource.onerror = (error) => console.log(error);
+
     Listener.data.eventSource.onmessage = (event) => {
       let resData = JSON.parse(event.data);
       client.action(resData.type, resData.client);

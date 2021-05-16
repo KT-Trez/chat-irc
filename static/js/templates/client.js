@@ -72,7 +72,7 @@ const template = { // eskportowany szablon klienta
     console.log(type, context);
     switch (type) {
       case 'disconnected':
-        if (context.id == sessionStorage.getItem(client_id))
+        if (context.id == sessionStorage.getItem('client_id'))
           this.data.reconnect();
         break;
       case 'joined':
