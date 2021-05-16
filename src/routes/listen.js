@@ -21,7 +21,7 @@ router.get('/listenClients', (req, res) => {
       'Content-Type': 'text/event-stream',
       'Connection': 'keep-alive',
       'Cache-Control': 'no-cache',
-      'Transfer-Encoding': 'Chucked'
+      'Transfer-Encoding': 'chunked'
     });
     res.write('\n');
     clientData.res = res;
@@ -41,7 +41,6 @@ router.get('/listenClients', (req, res) => {
     room.clients.forEach(eventClient => eventClient.res.write(`data: ${JSON.stringify(data)}\n\n`));
 
     req.on('close', () => {
-      console.log('Wyrzucono');
       room.clients.splice(room.clients.indexOf(clientData), 1);
 
       let messageData = {

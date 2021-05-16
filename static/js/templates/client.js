@@ -49,7 +49,6 @@ const template = { // eskportowany szablon klienta
     }
   },
   action(type, context) { // powtarzalne wywoływanie szablonu
-    console.log(type, context);
     switch (type) {
       case 'joined':
         let clientJoined = this.template
