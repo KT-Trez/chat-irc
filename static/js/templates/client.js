@@ -69,9 +69,11 @@ const template = { // eskportowany szablon klienta
     }
   },
   action(type, context) { // powtarzalne wywoływanie szablonu
+    console.log(type, context);
     switch (type) {
       case 'disconnected':
-        this.data.reconnect();
+        if (context.id == sessionStorage.getItem(client_id))
+          this.data.reconnect();
         break;
       case 'joined':
         let clientJoined = this.template
