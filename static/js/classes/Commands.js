@@ -31,7 +31,7 @@ export default class Commands {
     let option = new Option().style;
     option.color = color;
     if (option.color != color)
-      return message.mount('info', {
+      return message.action('info', {
         color: 'red',
         content: 'Niepoprawny kolor'
       });
@@ -51,7 +51,7 @@ export default class Commands {
 
     if (res.ok) {
       console.log(`${Utils.fullTime(new Date())} [SUCCESS] Changed client color.`);
-      message.mount('info', {
+      message.action('info', {
         color: '#43b582',
         content: 'Zmieniono kolor'
       });
@@ -72,7 +72,7 @@ export default class Commands {
       helpMessage += '<br><i>' + await new Commands()[Commands.commandList[i]](true) + '</i><br>'
     };
 
-    message.mount('info', {
+    message.action('info', {
       color: null,
       content: helpMessage
     });

@@ -3,9 +3,7 @@ console.log('Loaded template: message.js');
 import Utils from '../components/utils.js'
 
 const template = { // eskportowany szablon wiadomości czatu
-  data: {},
-  async action() {}, // uruchomiony szablon
-  mount(type, context) { // montowanie i uruchamianie szablonu
+  action(type, context) { // powtarzalne wywoływanie szablonu
     let message = null;
     switch (type) {
       case 'info':

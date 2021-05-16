@@ -53,7 +53,7 @@ module.exports = class Message {
       string: '<3',
       emoji: '❤️'
     }];
-    emojiList.forEach(emoji => this.content = this.content.replace(emoji.string, emoji.emoji));
+    emojiList.forEach(emoji => this.content = this.content.replaceAll(emoji.string, emoji.emoji));
     return this;
   }
 

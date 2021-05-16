@@ -82,6 +82,24 @@
   overflow-y: auto;
 }
 
+#js-emoji-bar {
+  display: flex;
+  position: absolute;
+  bottom: 71px;
+}
+
+#js-emoji-bar>p {
+  user-select: none;
+}
+
+#js-emoji-bar>p:hover {
+  transform: scale(1.4);
+}
+
+#js-emoji-bar>p:active {
+  transform: scale(1.2);
+}
+
 #js-root__chat__input__button--emoji {}
 
 #js-root__chat__input__message {

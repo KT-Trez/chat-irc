@@ -60,7 +60,7 @@ const template = { // eskportowany szablon startowy
           new Command()[commandName](false, args);
           messageInput.value = '';
         } else
-          message.mount('info', {
+          message.action('info', {
             color: 'red',
             content: 'Nie ma takiej komendy'
           });
@@ -80,7 +80,19 @@ const template = { // eskportowany szablon startowy
 
       document.getElementById('js-root__controls__buttons__button--leave').onclick = () => this.leaveRoom();
 
-      document.getElementById('js-root__chat__input__button--send').onclick = () => this.sendMessage()
+      let emojiBarVisable = false;
+      document.getElementById('js-root__chat__input__button--emoji').onclick = () => {
+        if (!emojiBarVisable) {
+          document.getElementById('js-emoji-bar').classList.remove('js-hide');
+          emojiBarVisable = true;
+        } else {
+          document.getElementById('js-emoji-bar').classList.add('js-hide');
+          emojiBarVisable = false;
+        };
+      };
+      Array.from(document.getElementById('js-emoji-bar').children).forEach(emoji => emoji.onclick = () => document.getElementById('js-root__chat__input__message').value += emoji.dataset.emoji);
+
+      document.getElementById('js-root__chat__input__button--send').onclick = () => this.sendMessage();
       document.getElementById('js-root__chat__input__message').onkeydown = (event) => event.key.toLowerCase() == 'enter' ? this.sendMessage() : null;
 
       Command.mapCommands();
@@ -88,13 +100,14 @@ const template = { // eskportowany szablon startowy
       Listener.listenMessage();
     }
   },
-  async action() { // uruchomiony szablon
-    document.getElementById('js-nick-container__nick__inputs--join')
-      .addEventListener('click', () => this.data.joinRoom());
+  async action() { // powtarzalne wywoływanie szablonu
+    // TODO: Uruchamianie po zmianie pokoju
   },
-  mount() { // montowanie i uruchamianie szablonu
+  mount() { // jednorazowe wywoływanie szablonu
     document.getElementById('js-root__chat__messages').innerHTML = this.template;
     this.action();
+    document.getElementById('js-nick-container__nick__inputs--join')
+      .addEventListener('click', () => this.data.joinRoom());
   },
   template: // szablon startowy
     `

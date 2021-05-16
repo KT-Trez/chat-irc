@@ -54,7 +54,7 @@ export default class Listener {
           Listener.recoverMessages(sessionStorage.getItem('last_message'), resData.orderNumber);
         sessionStorage.setItem('last_message', resData.orderNumber);
 
-        message.mount(resData.type, resData);
+        message.action(resData.type, resData);
       };
     } catch (err) {
       if (err.name != 'AbortError') {
