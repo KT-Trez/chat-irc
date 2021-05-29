@@ -1,8 +1,6 @@
 "use strict";
 console.log('Loaded: Commands.js');
-import Utils from '../components/utils.js'
-
-import message from '../templates/message.js'
+import Message from '../classes/Message.js';
 
 export default class Commands {
 
@@ -19,7 +17,7 @@ export default class Commands {
     if (help)
       return 'Czyści historię czatu';
 
-    document.getElementById('js-root__chat__messages').innerHTML = '';
+    document.getElementById('js-chat').innerHTML = '';
   }
 
   async color(help, args) {
@@ -31,34 +29,14 @@ export default class Commands {
     let option = new Option().style;
     option.color = color;
     if (option.color != color)
-      return message.action('info', {
+      return Message.render({
+        client: 'Info',
         color: 'red',
-        content: 'Niepoprawny kolor'
+        content: 'Niepoprawny kolor',
+        timestamp: new Date()
       });
 
-    console.log(`${Utils.fullTime(new Date())} [WORKING] Changing client color.`);
-
-    let reqData = {
-      color: color,
-      room: sessionStorage.getItem('client_room'),
-      token: sessionStorage.getItem('client_token'),
-    };
-
-    let res = await fetch('/chat/color', {
-      body: JSON.stringify(reqData),
-      method: 'post',
-    });
-
-    if (res.ok) {
-      console.log(`${Utils.fullTime(new Date())} [SUCCESS] Changed client color.`);
-      message.action('info', {
-        color: '#43b582',
-        content: 'Zmieniono kolor'
-      });
-    } else {
-      console.log(`${Utils.fullTime(new Date())} [ERROR] Failed to change client color.`);
-      document.getElementById('js-root__info').innerText = 'Niepowodzenie zmiany koloru';
-    };
+    sessionStorage.setItem('client_color', color);
   }
 
   async help(help) {
@@ -72,9 +50,11 @@ export default class Commands {
       helpMessage += '<br><i>' + await new Commands()[Commands.commandList[i]](true) + '</i><br>'
     };
 
-    message.action('info', {
-      color: null,
-      content: helpMessage
+    Message.render({
+      client: 'Info',
+      color: 'red',
+      content: helpMessage,
+      timestamp: new Date()
     });
   }
 

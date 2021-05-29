@@ -13,7 +13,6 @@ export default class Utils { // klasa pomocnicza
     return oneToDwoDigit(time.getHours()) + ':' + oneToDwoDigit(time.getMinutes()) + ':' + oneToDwoDigit(time.getSeconds());
   }
 
-
   static getRandomInt(min, max) { // funckja zwracająca liczbę z przedziału <min, max>
     min = Math.ceil(min);
     max = Math.floor(max);

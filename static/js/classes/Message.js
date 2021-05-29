@@ -4,36 +4,49 @@ import Utils from '../components/utils.js'
 
 export default class Message {
 
+  static render(data) {
+    let messageBox = $('<div>')
+      .addClass('message');
+
+    $('<span>')
+      .addClass('message__timestamp')
+      .text(Utils.timeShort(new Date(data.timestamp)))
+      .appendTo(messageBox);
+
+    $('<span>')
+      .addClass('message__author')
+      .css('color', data.color ? data.color : null)
+      .text(data.client)
+      .appendTo(messageBox);
+
+    $('<span>')
+      .addClass('message__content')
+      .text(data.content)
+      .emoticonize()
+      .appendTo(messageBox);
+
+    $('#js-chat').append(messageBox);
+  }
+
   constructor(content) {
+    this.client = sessionStorage.getItem('client_nick');
+    this.color = sessionStorage.getItem('client_color');
     this.content = content;
-    this.data = null;
-    this.room = sessionStorage.getItem('client_room');
-    this.token = sessionStorage.getItem('client_token');
-    this.type = 'message';
+    this.timestamp = new Date();
   }
 
   async send() {
     console.log(`${Utils.fullTime(new Date())} [WORKING] Sending message.`);
 
-    let reqData = {
-      content: this.content,
-      data: this.data,
-      room: this.room,
-      token: this.token,
-      type: this.type
-    };
-
-    let res = await fetch('/chat/message', {
-      body: JSON.stringify(reqData),
+    let res = await fetch('/postMessage', {
+      body: JSON.stringify(this),
       method: 'post'
     });
 
     if (res.ok)
       console.log(`${Utils.fullTime(new Date())} [SUCCESS] Message sent.`);
-    else {
+    else
       console.log(`${Utils.fullTime(new Date())} [ERROR] Failed to send message.`);
-      document.getElementById('js-root__info').innerText = 'Niepowodzenie przy wysyłaniu wiadomości';
-    };
   }
 
 }
