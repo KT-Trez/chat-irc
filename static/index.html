@@ -14,12 +14,12 @@
   <link rel="stylesheet" href="css/scrollbar.css">
 
   <!-- libs -->
-  <script type="application/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-  <script type="application/javascript" src="js/libs/jquery.tinyscrollbar.js"></script>
-
   <link href="js/libs/emoji/jquery.cssemoticons.css" media="screen" rel="stylesheet" type="text/css">
   <script src="js/libs/emoji/jquery-3.5.1.js" type="text/javascript"></script>
   <script src="js/libs/emoji/jquery.cssemoticons.js" type="text/javascript"></script>
+
+  <link href="https://unpkg.com/simplebar@latest/dist/simplebar.css" rel="stylesheet">
+  <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
 
   <!-- scripts -->
   <script type="module" src="js/app.js"></script>
@@ -36,7 +36,7 @@
 <body>
 
   <div id="root">
-    <div id="js-chat"></div>
+    <div id="js-chat" data-simplebar></div>
     <input id="js-message-input" placeholder="Nick" type="text">
   </div>
 

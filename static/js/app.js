@@ -10,7 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (event.key.toLowerCase() == 'enter' && event.target.value) {
       Listener.listenMessage();
       sessionStorage.setItem('client_nick', event.target.value);
-
+      sessionStorage.setItem('client_color', '#' + Math.floor(Math.random() * 16777215).toString(16));
 
       event.target.placeholder = 'Napisz wiadomość';
       event.target.value = '';
