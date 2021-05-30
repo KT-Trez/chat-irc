@@ -5,7 +5,7 @@ import Utils from '../components/utils.js'
 export default class Message {
 
   static render(data) {
-    let messageBox = $('<div>')
+    let messageBox = $('<pre>')
       .addClass('message');
 
     $('<span>')
@@ -25,7 +25,7 @@ export default class Message {
       .emoticonize()
       .appendTo(messageBox);
 
-    $('#js-chat').append(messageBox);
+    $('.simplebar-content').prepend(messageBox);
   }
 
   constructor(content) {

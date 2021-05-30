@@ -11,13 +11,14 @@ export default class Commands {
     methods.forEach(method => Commands.commandList.push(method));
 
     Commands.commandList.splice(Commands.commandList.indexOf('constructor'), 1);
+    console.log(Commands.commandList);
   }
 
   clear(help) {
     if (help)
       return 'Czyści historię czatu';
 
-    document.getElementById('js-chat').innerHTML = '';
+    document.getElementsByClassName('simplebar-content')[0].innerHTML = '';
   }
 
   async color(help, args) {
@@ -43,11 +44,11 @@ export default class Commands {
     if (help)
       return 'Wyświetla wiadomość pomocy';
 
-    let helpMessage = '<br>';
+    let helpMessage = '\n';
 
     for (var i = 0; i < Commands.commandList.length; i++) {
-      helpMessage += '<b>' + Commands.commandList[i] + '</b>';
-      helpMessage += '<br><i>' + await new Commands()[Commands.commandList[i]](true) + '</i><br>'
+      helpMessage += '\n' + Commands.commandList[i] + '\n';
+      helpMessage += '\n   ' + await new Commands()[Commands.commandList[i]](true) + '\n'
     };
 
     Message.render({
