@@ -3,7 +3,9 @@
   word-break: break-all;
 }
 
-.message__timestamp {}
+.message__timestamp {
+  word-break: break-all;
+}
 
 .message__author {
   font-weight: bold;
@@ -11,4 +13,6 @@
   margin-right: 8px;
 }
 
-.message__content {}
+.message__content {
+  word-break: break-all;
+}

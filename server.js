@@ -35,7 +35,7 @@ app.post('/postMessage', (req, res) => {
 
 app.listen(port, function() {
   console.log('-------------------------' + '\n' +
-    'app started' + '\n' +
+    'Server started' + '\n' +
     ' > port: ' + port + '\n' +
     '-------------------------');
 });
