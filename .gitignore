@@ -1,6 +1,6 @@
-node_modules
+# dependencies
+/node_modules
+/package-lock.json
 
-src/data/*
-!src/data/.keep
-
-todo.txt
+# editors
+/.idea

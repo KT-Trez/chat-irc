@@ -1,10 +1,11 @@
 {
   "author": {
-    "name": "Trez",
-    "email": "bartlomiej@10g.pl"
+    "email": "bartlomiej.was@10g.pl",
+    "name": "Bartlomiej 'Trez' Was"
   },
   "bugs": {
-    "url": "https://github.com/KT-Trez/Chat_IRC/issues"
+    "email": "kt.bugs@10g.pl",
+    "url": "https://github.com/KT-Trez/chat-irc/issues"
   },
   "dependencies": {
     "express": "^4.17.1",
@@ -14,16 +15,15 @@
   "engines": {
     "node": "16.x"
   },
-  "homepage": "https://github.com/KT-Trez/Chat_IRC#readme",
   "keywords": [
     "chat",
     "irc"
   ],
   "main": "server.js",
-  "name": "chat_irc",
+  "name": "chat-irc",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KT-Trez/Chat_IRC.git"
+    "url": "https://github.com/KT-Trez/chat-irc.git"
   },
   "scripts": {
     "start": "node server.js"

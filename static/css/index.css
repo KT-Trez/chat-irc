@@ -1,23 +1,23 @@
 #js-chat {
-  height: calc(100% - 120px);
-  width: 60% !important;
-  background-color: #404040;
-  border: 1px solid transparent;
-  border-radius: 5px;
-  padding: 5px;
-  margin: 0px;
+    height: calc(100% - 120px);
+    width: 60% !important;
+    background-color: #404040;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 0;
 }
 
 #js-message-input {
-  width: 60%;
-  background-color: #404040;
-  color: white;
-  border: 1px solid transparent;
-  border-radius: 5px;
-  padding: 5px;
-  margin: 20px;
+    width: 60%;
+    background-color: #404040;
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 20px;
 }
 
 #js-message-input:focus {
-  outline: none;
+    outline: none;
 }
